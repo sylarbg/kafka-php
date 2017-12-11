@@ -15,6 +15,7 @@
 namespace Kafka\Producer;
 
 use Amp\Loop;
+use \Kafka\Producer\State;
 
 /**
 +------------------------------------------------------------------------------
@@ -79,10 +80,7 @@ class Process
         });
 
         // init state
-        $this->state = \Kafka\Producer\State::getInstance();
-        if ($this->logger) {
-            $this->state->setLogger($this->logger);
-        }
+        $this->state = $this->createState();
         $this->state->setCallback([
             \Kafka\Producer\State::REQUEST_METADATA => function () {
                 return $this->syncMeta();
@@ -392,6 +390,19 @@ class Process
         }
 
         return $sendData;
+    }
+
+    // }}}
+    // {{{ protected function createState()
+
+    protected function createState()
+    {
+        $state = new State();
+        if ($this->logger) {
+            $state->setLogger($this->logger);
+        }
+
+        return $state;
     }
 
     // }}}

@@ -30,7 +30,8 @@ use Amp\Loop;
 
 class State
 {
-    use \Kafka\SingletonTrait;
+    use \Psr\Log\LoggerAwareTrait;
+    use \Kafka\LoggerTrait;
     // {{{ consts
 
     const REQUEST_METADATA = 1;
